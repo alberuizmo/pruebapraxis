@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthService } from "../services/auth.service";
 import { TokenManager } from "@/lib/auth-tokens";
+import { AUTH, QUERY_KEYS } from "@/constants";
 import { useEffect } from "react";
 
 export const useAuth = () => {
     const queryClient = useQueryClient();
 
     const { data: user, isLoading } = useQuery({
-        queryKey: ['auth', 'session'],
+        queryKey: QUERY_KEYS.AUTH.SESSION,
         queryFn: AuthService.getSession,
         staleTime: 5 * 60 * 1000, // 5 minutes (re-validate periodically)
         retry: false,
@@ -19,14 +20,14 @@ export const useAuth = () => {
         mutationFn: AuthService.login,
         onSuccess: (response) => {
             // Only store user data in cache, token is in sessionStorage
-            queryClient.setQueryData(['auth', 'session'], response.user);
+            queryClient.setQueryData(QUERY_KEYS.AUTH.SESSION, response.user);
         },
     });
 
     const logoutMutation = useMutation({
         mutationFn: AuthService.logout,
         onSuccess: () => {
-            queryClient.setQueryData(['auth', 'session'], null);
+            queryClient.setQueryData(QUERY_KEYS.AUTH.SESSION, null);
             queryClient.clear(); // Clear all cached data on logout
         },
     });
@@ -41,21 +42,21 @@ export const useAuth = () => {
             
             if (!token) {
                 // Token expired or invalid, force logout
-                queryClient.setQueryData(['auth', 'session'], null);
+                queryClient.setQueryData(QUERY_KEYS.AUTH.SESSION, null);
                 return;
             }
             
-            // If token expires in less than 5 minutes, refresh it
+            // If token expires in less than threshold, refresh it
             const timeUntilExpiry = token.expiresAt - Date.now();
-            if (timeUntilExpiry < 5 * 60 * 1000) {
+            if (timeUntilExpiry < AUTH.REFRESH_THRESHOLD_MS) {
                 AuthService.refreshSession().then((success) => {
                     if (!success) {
                         // Refresh failed, logout user
-                        queryClient.setQueryData(['auth', 'session'], null);
+                        queryClient.setQueryData(QUERY_KEYS.AUTH.SESSION, null);
                     }
                 });
             }
-        }, 60 * 1000); // Check every minute
+        }, AUTH.REFRESH_CHECK_INTERVAL_MS); // Check every minute
 
         return () => clearInterval(interval);
     }, [user, queryClient]);

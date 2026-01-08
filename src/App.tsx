@@ -1,10 +1,13 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { ProtectedLayout } from "@/components/layouts/ProtectedLayout";
 import { DashboardPage } from "@/features/dashboard/pages/DashboardPage";
 import { TokenManager } from "@/lib/auth-tokens";
-import type { User } from "@/features/auth/services/auth.service";
+import { QUERY_KEYS, ROUTES } from "@/constants";
+import { env } from "@/config/env";
+import type { User, UserRole } from "@/types";
 
 /**
  * Initialize session from stored token
@@ -27,7 +30,7 @@ const getInitialSession = (): User | null => {
     id: payload.userId,
     email: payload.email,
     name: 'Test User',
-    role: payload.role as 'admin' | 'user'
+    role: payload.role as UserRole
   };
 };
 
@@ -44,7 +47,7 @@ const queryClient = new QueryClient({
 // Hydrate cache with validated session
 const initialSession = getInitialSession();
 if (initialSession) {
-  queryClient.setQueryData(['auth', 'session'], initialSession);
+  queryClient.setQueryData(QUERY_KEYS.AUTH.SESSION, initialSession);
 }
 
 function App() {
@@ -52,17 +55,20 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
           
           <Route element={<ProtectedLayout />}>
-             <Route path="/dashboard" element={<DashboardPage />} />
+             <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
              {/* Redirect root to dashboard */}
-             <Route path="/" element={<Navigate to="/dashboard" replace />} />
+             <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to={ROUTES.LOGIN} replace />} />
         </Routes>
       </BrowserRouter>
+      
+      {/* DevTools only in development */}
+      {env.enableDevTools && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 }

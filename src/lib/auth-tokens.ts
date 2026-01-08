@@ -14,22 +14,11 @@
  * - Sensitive data NEVER stored in client storage
  */
 
-export interface AuthToken {
-    accessToken: string;
-    expiresAt: number; // Unix timestamp
-    userId: string;
-}
+import type { AuthToken, TokenPayload } from '@/types';
+import { AUTH } from '@/constants';
 
-export interface TokenPayload {
-    userId: string;
-    email: string;
-    role: string;
-    iat: number; // issued at
-    exp: number; // expiration
-}
-
-const TOKEN_KEY = 'auth_token';
-const TOKEN_DURATION = 15 * 60 * 1000; // 15 minutes (production standard)
+const TOKEN_KEY = AUTH.SESSION_STORAGE_KEY;
+const TOKEN_DURATION = AUTH.TOKEN_EXPIRATION_MS;
 
 // Simulate JWT token generation (in production, backend does this)
 function generateToken(userId: string, email: string, role: string): AuthToken {

@@ -1,4 +1,4 @@
-import type { Transaction } from "@/features/transactions/services/transaction.service";
+import type { Transaction } from "@/types";
 
 interface TransactionDetailProps {
     transaction: Transaction;

@@ -1,6 +1,7 @@
 import { useTransactions } from "../hooks/useTransactions";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
-import type { TransactionStatus, Transaction } from "../services/transaction.service";
+import type { TransactionStatus, Transaction } from "@/types";
+import { TRANSACTION } from "@/constants";
 import { ChevronLeft, ChevronRight, ArrowUpDown, MoreHorizontal, ArrowUp, ArrowDown, Calendar, X } from "lucide-react";
 import { useState } from "react";
 import { Sheet } from "@/components/ui/sheet";
@@ -8,14 +9,8 @@ import { TransactionDetail } from "./TransactionDetail";
 import { clsx } from "clsx";
 
 const StatusBadge = ({ status }: { status: TransactionStatus }) => {
-    const styles = {
-        PENDING: "bg-yellow-100 text-yellow-800 border-yellow-200",
-        CONFIRMED: "bg-emerald-100 text-emerald-800 border-emerald-200",
-        FAILED: "bg-red-100 text-red-800 border-red-200"
-    };
-
     return (
-        <span className={clsx("inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border", styles[status])}>
+        <span className={clsx("inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border", TRANSACTION.STATUS_STYLES[status])}>
             {status}
         </span>
     );

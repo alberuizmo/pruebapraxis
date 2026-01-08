@@ -1,10 +1,12 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { TransactionService, type TransactionFilters, type TransactionSort } from "../services/transaction.service";
+import { TransactionService } from "../services/transaction.service";
+import type { TransactionFilters, TransactionSort } from "@/types";
 import { useState } from "react";
+import { PAGINATION } from "@/constants";
 
 export const useTransactions = (initialFilters?: TransactionFilters) => {
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(PAGINATION.DEFAULT_PAGE_SIZE);
     const [filters, setFilters] = useState<TransactionFilters>(initialFilters || {});
     const [sort, setSort] = useState<TransactionSort>({ field: 'date', direction: 'desc' });
 

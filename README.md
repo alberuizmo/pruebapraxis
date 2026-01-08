@@ -80,7 +80,57 @@ src/
 ├── lib/                 # Utilidades
 │   ├── auth-tokens.ts   # Gestión de tokens JWT
 │   └── utils.ts         # Funciones auxiliares
+├── types/               # 🆕 Tipos TypeScript compartidos
+│   └── index.ts         # Definiciones de tipos centralizadas
+├── constants/           # 🆕 Constantes de la aplicación
+│   └── index.ts         # Valores constantes reutilizables
+├── config/              # 🆕 Configuración
+│   └── env.ts           # Gestión de variables de entorno
 └── test/                # Configuración de tests
+```
+
+## ⚙️ Configuración
+
+### Variables de Entorno
+
+El proyecto usa variables de entorno para configuración flexible:
+
+```bash
+# Copiar el archivo de ejemplo
+cp .env.example .env
+```
+
+Variables disponibles:
+```bash
+# API
+VITE_API_URL=http://localhost:3000
+VITE_API_TIMEOUT=30000
+
+# Autenticación
+VITE_TOKEN_EXPIRATION_MINUTES=15
+VITE_TOKEN_REFRESH_THRESHOLD_MINUTES=5
+
+# Características
+VITE_ENABLE_DEV_TOOLS=true
+VITE_ENABLE_MOCK_DATA=true
+
+# Entorno
+VITE_APP_ENV=development
+```
+
+### Tipos y Constantes Compartidas
+
+Para mejorar la mantenibilidad, los tipos y constantes están centralizados:
+
+```typescript
+// src/types/index.ts - Tipos compartidos
+import type { User, Transaction, TransactionStatus } from '@/types';
+
+// src/constants/index.ts - Constantes
+import { PAGINATION, AUTH, QUERY_KEYS } from '@/constants';
+
+// src/config/env.ts - Variables de entorno type-safe
+import { env } from '@/config/env';
 ```
 
 ## 🔐 Implementación de Seguridad

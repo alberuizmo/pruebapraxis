@@ -11,24 +11,8 @@
  * 7. Audit logging of authentication events
  */
 
-import { TokenManager, type AuthToken } from '@/lib/auth-tokens';
-
-export interface User {
-    id: string;
-    email: string;
-    name: string;
-    role: 'admin' | 'user';
-}
-
-export interface LoginCredentials {
-    email: string;
-    password?: string;
-}
-
-export interface AuthResponse {
-    user: User;
-    token: AuthToken;
-}
+import { TokenManager } from '@/lib/auth-tokens';
+import type { User, LoginCredentials, AuthResponse } from '@/types';
 
 export const AuthService = {
     login: async (credentials: LoginCredentials): Promise<AuthResponse> => {

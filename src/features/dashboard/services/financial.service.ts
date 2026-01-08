@@ -1,11 +1,4 @@
-export interface Account {
-    id: string;
-    name: string;
-    number: string;
-    balance: number;
-    currency: 'USD' | 'EUR' | 'COP';
-    lastUpdated: string; // ISO Date
-}
+import type { Account } from '@/types';
 
 const mockAccounts: Account[] = [
     {
@@ -14,6 +7,7 @@ const mockAccounts: Account[] = [
         number: '**** 4589',
         balance: 24500.50,
         currency: 'USD',
+        type: 'savings',
         lastUpdated: new Date().toISOString()
     },
     {
@@ -22,6 +16,7 @@ const mockAccounts: Account[] = [
         number: '**** 1234',
         balance: 1200.00,
         currency: 'USD',
+        type: 'checking',
         lastUpdated: new Date(Date.now() - 3600000).toISOString()
     },
     {
@@ -30,6 +25,7 @@ const mockAccounts: Account[] = [
         number: '**** 9999',
         balance: 50000.00,
         currency: 'EUR',
+        type: 'savings',
         lastUpdated: new Date(Date.now() - 86400000).toISOString()
     }
 ];

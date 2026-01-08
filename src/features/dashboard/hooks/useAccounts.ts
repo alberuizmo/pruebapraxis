@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { FinancialService, type Account } from "../services/financial.service";
+import { FinancialService } from "../services/financial.service";
+import type { Account } from "@/types";
+import { QUERY_KEYS } from "@/constants";
 import { useState } from "react";
 
 export const useAccounts = () => {
     return useQuery({
-        queryKey: ['financial', 'accounts'],
+        queryKey: QUERY_KEYS.FINANCIAL.ACCOUNTS,
         queryFn: FinancialService.getAccounts,
     });
 };

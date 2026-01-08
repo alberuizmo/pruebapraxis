@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-
+import { ROUTES } from "@/constants";
 import { Button } from "@/components/ui";
 
 export const ProtectedLayout = () => {
@@ -15,7 +15,7 @@ export const ProtectedLayout = () => {
     }
 
     if (!user) {
-        return <Navigate to="/login" replace />;
+        return <Navigate to={ROUTES.LOGIN} replace />;
     }
 
     return (

@@ -1,34 +1,5 @@
-export type TransactionStatus = 'PENDING' | 'CONFIRMED' | 'FAILED';
-
-export interface Transaction {
-    id: string;
-    date: string; // ISO
-    concept: string;
-    amount: number;
-    status: TransactionStatus;
-    merchant: string;
-    category: string;
-}
-
-export interface TransactionFilters {
-    search?: string;
-    startDate?: string;
-    endDate?: string;
-    status?: TransactionStatus | 'ALL';
-}
-
-export interface TransactionSort {
-    field: 'date' | 'amount';
-    direction: 'asc' | 'desc';
-}
-
-export interface PaginatedResult<T> {
-    data: T[];
-    total: number;
-    page: number;
-    pageSize: number;
-    totalPages: number;
-}
+import type { Transaction, TransactionStatus, TransactionFilters, TransactionSort, PaginatedResult } from '@/types';
+import { TRANSACTION } from '@/constants';
 
 // Generate 5000+ Mock Transactions
 const generateTransactions = (count: number): Transaction[] => {
@@ -55,7 +26,7 @@ const generateTransactions = (count: number): Transaction[] => {
 };
 
 // Singleton Mock Database
-const MOCK_DB = generateTransactions(5000);
+const MOCK_DB = generateTransactions(TRANSACTION.MOCK_DATA_COUNT);
 
 export const TransactionService = {
     getTransactions: async (
