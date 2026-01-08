@@ -1,5 +1,5 @@
 import type { Account } from "../services/financial.service";
-import { cn } from "@/components/ui";
+import { cn } from "@/lib/utils";
 import { ChevronDown, Wallet } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
