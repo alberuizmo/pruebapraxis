@@ -74,7 +74,9 @@ export const TransactionService = {
                     valA = new Date(valA).getTime();
                     valB = new Date(valB).getTime();
                 } else if (sort.field === 'amount') {
-                     valA = Math.abs(a.amount); // Sort by magnitude or actual value? Usually value for amount.
+                    // Sort by actual value (including sign) for proper income/expense ordering
+                    valA = a.amount;
+                    valB = b.amount;
                 }
 
                 if (valA < valB) return sort.direction === 'asc' ? -1 : 1;
