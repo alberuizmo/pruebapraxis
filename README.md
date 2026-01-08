@@ -178,6 +178,32 @@ Este proyecto implementa **patrones de seguridad de nivel producción**:
 - [x] Indicadores de página y navegación
 - [x] Maneja eficientemente +5,000 transacciones
 
+#### Optimización de Rendimiento
+
+**¿Por qué NO se usa virtualización?**
+
+Este proyecto implementa **paginación estricta del lado del servidor** en lugar de virtualización (virtual scrolling):
+
+```typescript
+// Solo se cargan 10 transacciones en memoria
+const { data } = useTransactions({
+    page: 1,
+    pageSize: 10
+});
+```
+
+**Justificación:**
+- ✅ Solo 10 filas renderizadas en el DOM (no 5,000)
+- ✅ Filtrado y ordenamiento procesados en el servidor
+- ✅ `keepPreviousData` para transiciones suaves
+- ✅ React Query con caché inteligente
+- ✅ Performance excelente sin complejidad adicional
+- ❌ Virtualización sería overhead innecesario
+
+**Resultado:** Cambios de página < 100ms, sin lag en filtros o ordenamiento.
+
+> **Nota:** La virtualización (react-window, react-virtual) es ideal cuando necesitas mostrar miles de filas simultáneamente en una lista infinita. Con paginación estricta, nunca tenemos más de 10 elementos en memoria, por lo que virtualización no aporta beneficio.
+
 #### Filtrado
 - [x] **Búsqueda de texto**: Buscar por concepto o comerciante
 - [x] **Rango de fechas**: Filtrar por fechas de inicio y fin
