@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, Button } from "@/components/ui";
-import type { Account } from "../services/financial.service";
+import type { Account } from "@/types";
 import { Eye, EyeOff, RefreshCw } from "lucide-react";
 import { useState } from "react";
 

@@ -1,4 +1,4 @@
-import type { Account } from "../services/financial.service";
+import type { Account } from "@/types";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Wallet } from "lucide-react";
 import { useState, useRef, useEffect } from "react";

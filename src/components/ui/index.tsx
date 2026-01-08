@@ -1,4 +1,5 @@
-import { ButtonHTMLAttributes, forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef } from "react";
+import type { ButtonHTMLAttributes, InputHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 // Button Component
