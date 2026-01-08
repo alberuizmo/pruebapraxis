@@ -1,0 +1,90 @@
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useAuth } from "../hooks/useAuth";
+import { Button, Input, Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import clsx from "clsx";
+
+const loginSchema = yup.object({
+  email: yup.string().email("Please enter a valid email").required("Email is required"),
+  password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+}).required();
+
+type LoginFormValues = yup.InferType<typeof loginSchema>;
+
+export const LoginForm = () => {
+  const { login, isLoggingIn, loginError } = useAuth();
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
+    resolver: yupResolver(loginSchema)
+  });
+
+  const onSubmit = async (data: LoginFormValues) => {
+    setServerError(null);
+    try {
+      await login(data.email);
+      navigate("/dashboard");
+    } catch (err) {
+        setServerError("Invalid credentials (simulated). Try text with '@'.");
+        console.error(err);
+    }
+  };
+
+  return (
+    <Card className="w-full max-w-md shadow-lg border-slate-100">
+      <CardHeader className="space-y-1 text-center">
+        <CardTitle className="text-2xl font-bold tracking-tight text-financial-primary">
+          Welcome back
+        </CardTitle>
+        <p className="text-sm text-slate-500">
+          Enter your email to sign in to your account
+        </p>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-4">
+            <Input
+              id="email"
+              type="email"
+              placeholder="name@example.com"
+              label="Email"
+              error={errors.email?.message}
+              {...register("email")}
+            />
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              label="Password"
+              error={errors.password?.message}
+              {...register("password")}
+            />
+          </div>
+            
+          {(loginError || serverError) && (
+              <div className="text-sm text-red-500 font-medium text-center bg-red-50 p-2 rounded">
+                  {serverError || "An error occurred during login"}
+              </div>
+          )}
+
+          <Button 
+            type="submit" 
+            className="w-full bg-financial-primary hover:bg-financial-secondary"
+            disabled={isLoggingIn}
+          >
+            {isLoggingIn ? "Signing in..." : "Sign In"}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="justify-center">
+          <p className="text-xs text-slate-400">
+              Simulated Login: Use any email with '@'
+          </p>
+      </CardFooter>
+    </Card>
+  );
+};
