@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../hooks/useAuth";
 import { Button, Input, Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ const loginSchema = yup.object({
 type LoginFormValues = yup.InferType<typeof loginSchema>;
 
 export const LoginForm = () => {
+  const { t } = useTranslation();
   const { login, isLoggingIn, loginError } = useAuth();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -38,10 +40,10 @@ export const LoginForm = () => {
     <Card className="w-full max-w-md shadow-lg border-slate-100">
       <CardHeader className="space-y-1 text-center">
         <CardTitle className="text-2xl font-bold tracking-tight text-financial-primary">
-          Welcome back
+          {t('auth.welcome')}
         </CardTitle>
         <p className="text-sm text-slate-500">
-          Enter your email to sign in to your account
+          {t('auth.emailPlaceholder')}
         </p>
       </CardHeader>
       <CardContent>
@@ -51,7 +53,7 @@ export const LoginForm = () => {
               id="email"
               type="email"
               placeholder="name@example.com"
-              label="Email"
+              label={t('auth.email')}
               error={errors.email?.message}
               {...register("email")}
             />
@@ -59,7 +61,7 @@ export const LoginForm = () => {
               id="password"
               type="password"
               placeholder="••••••••"
-              label="Password"
+              label={t('auth.password')}
               error={errors.password?.message}
               {...register("password")}
             />
@@ -76,7 +78,7 @@ export const LoginForm = () => {
             className="w-full bg-financial-primary hover:bg-financial-secondary"
             disabled={isLoggingIn}
           >
-            {isLoggingIn ? "Signing in..." : "Sign In"}
+            {isLoggingIn ? t('common.loading') : t('auth.loginButton')}
           </Button>
         </form>
       </CardContent>

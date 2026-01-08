@@ -1,10 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { ROUTES } from "@/constants";
 import { Button } from "@/components/ui";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export const ProtectedLayout = () => {
     const { user, isLoading, logout } = useAuth();
+    const { t } = useTranslation();
 
     if (isLoading) {
         return (
@@ -28,6 +31,7 @@ export const ProtectedLayout = () => {
                         <span className="font-semibold text-slate-900">Praxis</span>
                     </div>
                     <div className="flex items-center gap-4">
+                        <LanguageSwitcher />
                         <span className="text-sm text-slate-600 mr-2">{user.email}</span>
                         <Button 
                             variant="outline" 
@@ -35,7 +39,7 @@ export const ProtectedLayout = () => {
                             onClick={() => logout()}
                             className="text-slate-600 hover:text-slate-900 border-slate-200"
                         >
-                            Logout
+                            {t('auth.logout')}
                         </Button>
                     </div>
                 </div>

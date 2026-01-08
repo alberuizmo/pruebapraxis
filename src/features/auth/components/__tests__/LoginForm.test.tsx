@@ -27,15 +27,15 @@ describe('LoginForm', () => {
 
     it('renders login form correctly', () => {
         renderComponent();
-        expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
+        expect(screen.getByLabelText('auth.email')).toBeInTheDocument();
+        expect(screen.getByLabelText('auth.password')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'auth.loginButton' })).toBeInTheDocument();
     });
 
     it('validates empty inputs', async () => {
         renderComponent();
         
-        const submitButton = screen.getByRole('button', { name: /sign in/i });
+        const submitButton = screen.getByRole('button', { name: 'auth.loginButton' });
         fireEvent.click(submitButton);
 
         await waitFor(() => {
@@ -49,13 +49,13 @@ describe('LoginForm', () => {
     it('calls login with correct credentials on submit', async () => {
         renderComponent();
         
-        const emailInput = screen.getByRole('textbox', { name: /email/i });
-        const passwordInput = screen.getByLabelText(/password/i); // Password input usually doesn't have role=textbox if type=password
+        const emailInput = screen.getByRole('textbox', { name: 'auth.email' });
+        const passwordInput = screen.getByLabelText('auth.password');
 
         fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password123' } });
         
-        const submitButton = screen.getByRole('button', { name: /sign in/i });
+        const submitButton = screen.getByRole('button', { name: 'auth.loginButton' });
         fireEvent.click(submitButton);
 
         await waitFor(() => {

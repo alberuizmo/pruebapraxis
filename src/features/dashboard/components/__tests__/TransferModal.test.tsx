@@ -52,10 +52,10 @@ describe('TransferModal', () => {
             />
         );
 
-        expect(screen.getByText('New Transfer')).toBeInTheDocument();
-        expect(screen.getByText('From Account')).toBeInTheDocument();
-        expect(screen.getByText('To Account')).toBeInTheDocument();
-        expect(screen.getByText('Amount')).toBeInTheDocument();
+        expect(screen.getByText('transfer.title')).toBeInTheDocument();
+        expect(screen.getByText('transfer.fromAccount')).toBeInTheDocument();
+        expect(screen.getByText('transfer.toAccount')).toBeInTheDocument();
+        expect(screen.getByText('transfer.amount')).toBeInTheDocument();
     });
 
     it('should display current account information', () => {
@@ -83,7 +83,7 @@ describe('TransferModal', () => {
             />
         );
 
-        const select = screen.getByLabelText('To Account') as HTMLSelectElement;
+        const select = screen.getByLabelText('transfer.toAccount') as HTMLSelectElement;
         const options = Array.from(select.options);
 
         // Should have 3 options: placeholder + 2 other accounts (excluding current)
@@ -103,15 +103,15 @@ describe('TransferModal', () => {
             />
         );
 
-        const amountInput = screen.getByLabelText('Amount');
+        const amountInput = screen.getByLabelText('transfer.amount');
         
         // Test with zero
         fireEvent.change(amountInput, { target: { value: '0' } });
-        expect(screen.getByText('Amount must be greater than zero')).toBeInTheDocument();
+        expect(screen.getByText('transfer.errorInvalidAmount')).toBeInTheDocument();
 
         // Test with negative number
         fireEvent.change(amountInput, { target: { value: '-50' } });
-        expect(screen.getByText('Amount must be greater than zero')).toBeInTheDocument();
+        expect(screen.getByText('transfer.errorInvalidAmount')).toBeInTheDocument();
     });
 
     it('should show error when amount exceeds balance', () => {
@@ -124,12 +124,12 @@ describe('TransferModal', () => {
             />
         );
 
-        const amountInput = screen.getByLabelText('Amount');
+        const amountInput = screen.getByLabelText('transfer.amount');
         
         // Enter amount greater than balance (1200.00)
         fireEvent.change(amountInput, { target: { value: '1500' } });
         
-        expect(screen.getByText('Insufficient balance for this transfer')).toBeInTheDocument();
+        expect(screen.getByText('transfer.errorInsufficientBalance')).toBeInTheDocument();
     });
 
     it('should not show error for valid amount', () => {
@@ -142,13 +142,13 @@ describe('TransferModal', () => {
             />
         );
 
-        const amountInput = screen.getByLabelText('Amount');
+        const amountInput = screen.getByLabelText('transfer.amount');
         
         // Enter valid amount
         fireEvent.change(amountInput, { target: { value: '100' } });
         
-        expect(screen.queryByText('Amount must be greater than zero')).not.toBeInTheDocument();
-        expect(screen.queryByText('Insufficient balance for this transfer')).not.toBeInTheDocument();
+        expect(screen.queryByText('transfer.errorInvalidAmount')).not.toBeInTheDocument();
+        expect(screen.queryByText('transfer.errorInsufficientBalance')).not.toBeInTheDocument();
     });
 
     it('should disable transfer button when form is invalid', () => {
@@ -167,12 +167,12 @@ describe('TransferModal', () => {
         expect(transferButton).toBeDisabled();
 
         // Enter amount but no destination
-        const amountInput = screen.getByLabelText('Amount');
+        const amountInput = screen.getByLabelText('transfer.amount');
         fireEvent.change(amountInput, { target: { value: '100' } });
         expect(transferButton).toBeDisabled();
 
         // Select destination
-        const select = screen.getByLabelText('To Account');
+        const select = screen.getByLabelText('transfer.toAccount');
         fireEvent.change(select, { target: { value: '2' } });
         expect(transferButton).not.toBeDisabled();
     });
@@ -187,8 +187,8 @@ describe('TransferModal', () => {
             />
         );
 
-        const amountInput = screen.getByLabelText('Amount');
-        const select = screen.getByLabelText('To Account');
+        const amountInput = screen.getByLabelText('transfer.amount');
+        const select = screen.getByLabelText('transfer.toAccount');
         const transferButton = screen.getByRole('button', { name: /Transfer/i });
 
         // Enter valid amount and select destination
@@ -211,7 +211,7 @@ describe('TransferModal', () => {
             />
         );
 
-        const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+        const cancelButton = screen.getByRole('button', { name: 'common.cancel' });
         fireEvent.click(cancelButton);
 
         expect(mockOnClose).toHaveBeenCalledTimes(1);
@@ -227,8 +227,8 @@ describe('TransferModal', () => {
             />
         );
 
-        const amountInput = screen.getByLabelText('Amount');
-        const select = screen.getByLabelText('To Account');
+        const amountInput = screen.getByLabelText('transfer.amount');
+        const select = screen.getByLabelText('transfer.toAccount');
         const transferButton = screen.getByRole('button', { name: /Transfer/i });
 
         // Fill form
@@ -239,8 +239,8 @@ describe('TransferModal', () => {
         fireEvent.click(transferButton);
 
         // Should show success screen
-        expect(await screen.findByText('Transfer Successful!')).toBeInTheDocument();
-        expect(screen.getByText('$250.50 transferred successfully')).toBeInTheDocument();
+        expect(await screen.findByText('transfer.successTitle')).toBeInTheDocument();
+        expect(screen.getByText(/\$250\.50\s+transfer\.successMessage/)).toBeInTheDocument();
     });
 
     it('should call onClose after successful transfer timeout', async () => {
@@ -255,8 +255,8 @@ describe('TransferModal', () => {
             />
         );
 
-        const amountInput = screen.getByLabelText('Amount');
-        const select = screen.getByLabelText('To Account');
+        const amountInput = screen.getByLabelText('transfer.amount');
+        const select = screen.getByLabelText('transfer.toAccount');
         const transferButton = screen.getByRole('button', { name: /Transfer/i });
 
         // Fill and submit form
@@ -283,14 +283,14 @@ describe('TransferModal', () => {
             />
         );
 
-        const amountInput = screen.getByLabelText('Amount');
+        const amountInput = screen.getByLabelText('transfer.amount');
         const transferButton = screen.getByRole('button', { name: /Transfer/i });
 
         // Initially shows $0.00
-        expect(transferButton).toHaveTextContent('Transfer $0.00');
+        expect(transferButton).toHaveTextContent('transfer.transferButton $0.00');
 
         // Update amount
         fireEvent.change(amountInput, { target: { value: '75' } });
-        expect(transferButton).toHaveTextContent('Transfer $75');
+        expect(transferButton).toHaveTextContent('transfer.transferButton $75');
     });
 });

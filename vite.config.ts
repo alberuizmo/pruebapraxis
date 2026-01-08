@@ -15,5 +15,8 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
+    alias: {
+      'react-i18next': path.resolve(__dirname, './src/test/__mocks__/react-i18next.ts'),
+    },
   },
 })

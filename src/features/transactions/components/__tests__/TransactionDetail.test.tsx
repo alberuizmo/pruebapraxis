@@ -21,7 +21,7 @@ describe('TransactionDetail', () => {
 
     it('displays transaction status badge', () => {
         render(<TransactionDetail transaction={mockTransaction} />);
-        expect(screen.getByText('CONFIRMED')).toBeInTheDocument();
+        expect(screen.getByText('transactions.confirmed')).toBeInTheDocument();
     });
 
     it('displays transaction details', () => {
@@ -50,8 +50,8 @@ describe('TransactionDetail', () => {
             status: 'PENDING'
         };
         render(<TransactionDetail transaction={pendingTransaction} />);
-        
-        const badge = screen.getByText('PENDING');
+
+        const badge = screen.getByText('transactions.pending');
         expect(badge).toHaveClass('bg-yellow-100');
         expect(badge).toHaveClass('text-yellow-800');
     });
@@ -62,8 +62,8 @@ describe('TransactionDetail', () => {
             status: 'FAILED'
         };
         render(<TransactionDetail transaction={failedTransaction} />);
-        
-        const badge = screen.getByText('FAILED');
+
+        const badge = screen.getByText('transactions.failed');
         expect(badge).toHaveClass('bg-red-100');
         expect(badge).toHaveClass('text-red-800');
     });

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { Account } from "@/types";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Wallet } from "lucide-react";
@@ -11,6 +12,7 @@ interface AccountSelectorProps {
 }
 
 export const AccountSelector = ({ accounts, selectedId, onSelect, isLoading }: AccountSelectorProps) => {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -43,9 +45,9 @@ export const AccountSelector = ({ accounts, selectedId, onSelect, isLoading }: A
                     <Wallet className="h-4 w-4" />
                 </div>
                 <div className="text-left hidden sm:block">
-                    <p className="text-xs text-slate-500">Active Account</p>
+                    <p className="text-xs text-slate-500">{t('dashboard.activeAccount')}</p>
                     <p className="text-sm font-medium text-slate-900 leading-none">
-                        {selectedAccount?.name || "Select Account"}
+                        {selectedAccount?.name || t('account.selectAccount')}
                     </p>
                 </div>
                 <ChevronDown className={cn("h-4 w-4 text-slate-400 transition-transform", isOpen && "rotate-180")} />

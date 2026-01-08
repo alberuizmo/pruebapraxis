@@ -23,7 +23,7 @@ describe('TransactionsTable', () => {
         render(<TransactionsTable />);
         // Check for skeleton rows (they have animate-pulse class)
         // It's hard to query by class directly in RTL, but we can check if table headers exist
-        expect(screen.getByText(/recent transactions/i)).toBeInTheDocument();
+        expect(screen.getByText('dashboard.recentTransactions')).toBeInTheDocument();
     });
 
     it('renders transactions data correctly', () => {

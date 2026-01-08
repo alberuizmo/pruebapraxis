@@ -1,4 +1,5 @@
 import { useTransactions } from "../hooks/useTransactions";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
 import type { TransactionStatus, Transaction } from "@/types";
 import { TRANSACTION } from "@/constants";
@@ -9,9 +10,10 @@ import { TransactionDetail } from "./TransactionDetail";
 import { clsx } from "clsx";
 
 const StatusBadge = ({ status }: { status: TransactionStatus }) => {
+    const { t } = useTranslation();
     return (
         <span className={clsx("inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border", TRANSACTION.STATUS_STYLES[status])}>
-            {status}
+            {t(`transactions.${status.toLowerCase()}`)}
         </span>
     );
 };
@@ -22,6 +24,7 @@ const SortIcon = ({ field, currentSort }: { field: 'date' | 'amount'; currentSor
 };
 
 export const TransactionsTable = () => {
+    const { t } = useTranslation();
     const { 
         data: result, 
         isLoading, 
@@ -81,7 +84,7 @@ export const TransactionsTable = () => {
             <Card className="border-slate-200 shadow-sm">
                 <CardHeader className="flex flex-col gap-4 items-start pb-4 border-b border-slate-100">
                     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between w-full">
-                        <CardTitle className="text-lg font-semibold text-slate-900">Recent Transactions</CardTitle>
+                        <CardTitle className="text-lg font-semibold text-slate-900">{t('dashboard.recentTransactions')}</CardTitle>
                         {hasActiveFilters && (
                             <Button 
                                 variant="ghost" 
@@ -90,7 +93,7 @@ export const TransactionsTable = () => {
                                 className="text-slate-600 hover:text-slate-900"
                             >
                                 <X className="h-4 w-4 mr-2" />
-                                Clear Filters
+                                {t('transactions.clearFilters')}
                             </Button>
                         )}
                     </div>
@@ -100,7 +103,7 @@ export const TransactionsTable = () => {
                         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 w-full">
                             {/* Search by concept */}
                             <Input 
-                                placeholder="Search by concept or merchant..." 
+                                placeholder={t('transactions.searchPlaceholder')}
                                 className="h-9 flex-1"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -136,14 +139,14 @@ export const TransactionsTable = () => {
                                     setPage(1);
                                 }}
                             >
-                                <option value="ALL">All Status</option>
-                                <option value="PENDING">Pending</option>
-                                <option value="CONFIRMED">Confirmed</option>
-                                <option value="FAILED">Failed</option>
+                                <option value="ALL">{t('transactions.allStatus')}</option>
+                                <option value="PENDING">{t('transactions.pending')}</option>
+                                <option value="CONFIRMED">{t('transactions.confirmed')}</option>
+                                <option value="FAILED">{t('transactions.failed')}</option>
                             </select>
                             
                             <Button type="submit" size="sm" variant="secondary" className="whitespace-nowrap">
-                                Apply Filters
+                                {t('transactions.applyFilters')}
                             </Button>
                         </form>
                         
@@ -152,22 +155,22 @@ export const TransactionsTable = () => {
                             <div className="flex flex-wrap gap-2 text-xs text-slate-600">
                                 {searchTerm && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
-                                        Search: <strong>{searchTerm}</strong>
+                                        {t('transactions.search')}: <strong>{searchTerm}</strong>
                                     </span>
                                 )}
                                 {startDate && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
-                                        From: <strong>{new Date(startDate + 'T00:00:00').toLocaleDateString()}</strong>
+                                        {t('transactions.from')}: <strong>{new Date(startDate + 'T00:00:00').toLocaleDateString()}</strong>
                                     </span>
                                 )}
                                 {endDate && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
-                                        To: <strong>{new Date(endDate + 'T00:00:00').toLocaleDateString()}</strong>
+                                        {t('transactions.to')}: <strong>{new Date(endDate + 'T00:00:00').toLocaleDateString()}</strong>
                                     </span>
                                 )}
                                 {filters.status && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
-                                        Status: <strong>{filters.status}</strong>
+                                        {t('transactions.filterStatus')}: <strong>{t(`transactions.${filters.status.toLowerCase()}`)}</strong>
                                     </span>
                                 )}
                             </div>
@@ -180,14 +183,14 @@ export const TransactionsTable = () => {
                             <thead className="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-100">
                                 <tr>
                                     <th className="px-6 py-3 cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => toggleSort('date')}>
-                                        <div className="flex items-center gap-1">Date <SortIcon field="date" currentSort={sort}/></div>
+                                        <div className="flex items-center gap-1">{t('transactions.date')} <SortIcon field="date" currentSort={sort}/></div>
                                     </th>
-                                    <th className="px-6 py-3">Concept / Merchant</th>
-                                    <th className="px-6 py-3">Status</th>
+                                    <th className="px-6 py-3">{t('transactions.concept')}</th>
+                                    <th className="px-6 py-3">{t('transactions.status')}</th>
                                     <th className="px-6 py-3 text-right cursor-pointer hover:bg-slate-100 transition-colors" onClick={() => toggleSort('amount')}>
-                                        <div className="flex items-center justify-end gap-1">Amount <SortIcon field="amount" currentSort={sort}/></div>
+                                        <div className="flex items-center justify-end gap-1">{t('transactions.amount')} <SortIcon field="amount" currentSort={sort}/></div>
                                     </th>
-                                    <th className="px-6 py-3 text-right">Actions</th>
+                                    <th className="px-6 py-3 text-right">{t('transactions.actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
@@ -237,8 +240,8 @@ export const TransactionsTable = () => {
                     {/* Pagination */}
                     <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 bg-slate-50/50">
                         <div className="text-xs text-slate-500">
-                            Page <span className="font-medium">{page}</span> of <span className="font-medium">{result?.totalPages || 1}</span>
-                            <span className="hidden sm:inline"> ({result?.total} total)</span>
+                            {t('transactions.page')} <span className="font-medium">{page}</span> {t('transactions.of')} <span className="font-medium">{result?.totalPages || 1}</span>
+                            <span className="hidden sm:inline"> ({result?.total} {t('transactions.total')})</span>
                         </div>
                         <div className="flex gap-2">
                             <Button
@@ -265,7 +268,7 @@ export const TransactionsTable = () => {
             <Sheet 
                 isOpen={!!selectedTxn} 
                 onClose={() => setSelectedTxn(null)} 
-                title="Transaction Details"
+                title={t('transactions.transactionDetails')}
             >
                 {selectedTxn && <TransactionDetail transaction={selectedTxn} />}
             </Sheet>

@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, Button } from "@/components/ui";
+import { useTranslation } from "react-i18next";
 import type { Account } from "@/types";
 import { Eye, EyeOff, RefreshCw } from "lucide-react";
 import { useState } from "react";
@@ -9,6 +10,7 @@ interface BalanceCardProps {
 }
 
 export const BalanceCard = ({ account, isLoading }: BalanceCardProps) => {
+    const { t } = useTranslation();
     const [isVisible, setIsVisible] = useState(true);
 
     if (isLoading) {
@@ -32,7 +34,7 @@ export const BalanceCard = ({ account, isLoading }: BalanceCardProps) => {
             
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-slate-300">
-                    Total Balance
+                    {t('dashboard.totalBalance')}
                 </CardTitle>
                 <div className="flex items-center gap-2">
                      <Button 
@@ -53,7 +55,7 @@ export const BalanceCard = ({ account, isLoading }: BalanceCardProps) => {
                     <span>{account.name} ({account.number})</span>
                     <div className="flex items-center gap-1">
                         <RefreshCw className="h-3 w-3" />
-                        <span>Updated just now</span>
+                        <span>{t('dashboard.lastUpdate')}</span>
                     </div>
                 </div>
             </CardContent>

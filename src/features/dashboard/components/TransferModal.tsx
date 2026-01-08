@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Sheet } from "@/components/ui/sheet";
 import { Button } from "@/components/ui";
 import type { Account } from "@/types";
@@ -12,6 +13,7 @@ interface TransferModalProps {
 }
 
 export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: TransferModalProps) => {
+    const { t } = useTranslation();
     const [amount, setAmount] = useState("");
     const [destinationId, setDestinationId] = useState("");
     const [showSuccess, setShowSuccess] = useState(false);
@@ -35,12 +37,12 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
 
     if (showSuccess) {
         return (
-            <Sheet isOpen={isOpen} onClose={onClose} title="Transfer">
+            <Sheet isOpen={isOpen} onClose={onClose} title={t('transfer.title')}>
                 <div className="flex flex-col items-center justify-center h-full space-y-4 text-center">
                     <CheckCircle2 className="h-16 w-16 text-green-500" />
-                    <h3 className="text-xl font-semibold text-slate-900">Transfer Successful!</h3>
+                    <h3 className="text-xl font-semibold text-slate-900">{t('transfer.successTitle')}</h3>
                     <p className="text-slate-600">
-                        ${parseFloat(amount).toFixed(2)} transferred successfully
+                        ${parseFloat(amount).toFixed(2)} {t('transfer.successMessage')}
                     </p>
                 </div>
             </Sheet>
@@ -48,11 +50,11 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
     }
 
     return (
-        <Sheet isOpen={isOpen} onClose={onClose} title="New Transfer">
+        <Sheet isOpen={isOpen} onClose={onClose} title={t('transfer.title')}>
             <div className="space-y-6">
                 {/* From Account */}
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700">From Account</label>
+                    <label className="text-sm font-medium text-slate-700">{t('transfer.fromAccount')}</label>
                     <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
                         <p className="font-medium text-slate-900">{currentAccount?.name}</p>
                         <p className="text-sm text-slate-500">{currentAccount?.number}</p>
@@ -70,7 +72,7 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
                 {/* To Account */}
                 <div className="space-y-2">
                     <label htmlFor="destination" className="text-sm font-medium text-slate-700">
-                        To Account
+                        {t('transfer.toAccount')}
                     </label>
                     <select
                         id="destination"
@@ -78,7 +80,7 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
                         onChange={(e) => setDestinationId(e.target.value)}
                         className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
                     >
-                        <option value="">Select destination account...</option>
+                        <option value="">{t('transfer.selectDestination')}</option>
                         {availableAccounts.map((account) => (
                             <option key={account.id} value={account.id}>
                                 {account.name} - {account.number}
@@ -90,7 +92,7 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
                 {/* Amount */}
                 <div className="space-y-2">
                     <label htmlFor="amount" className="text-sm font-medium text-slate-700">
-                        Amount
+                        {t('transfer.amount')}
                     </label>
                     <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">
@@ -101,7 +103,7 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
                             type="number"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
-                            placeholder="0.00"
+                            placeholder={t('transfer.amountPlaceholder')}
                             step="0.01"
                             min="0"
                             className="w-full pl-8 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent text-lg"
@@ -112,14 +114,14 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
                 {/* Error if amount is invalid */}
                 {amount && parseFloat(amount) <= 0 && (
                     <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-sm text-red-700">Amount must be greater than zero</p>
+                        <p className="text-sm text-red-700">{t('transfer.errorInvalidAmount')}</p>
                     </div>
                 )}
 
                 {/* Warning if insufficient balance */}
                 {amount && parseFloat(amount) > 0 && parseFloat(amount) > (currentAccount?.balance || 0) && (
                     <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-sm text-red-700">Insufficient balance for this transfer</p>
+                        <p className="text-sm text-red-700">{t('transfer.errorInsufficientBalance')}</p>
                     </div>
                 )}
 
@@ -130,14 +132,14 @@ export const TransferModal = ({ isOpen, onClose, currentAccount, accounts }: Tra
                         className="flex-1"
                         onClick={onClose}
                     >
-                        Cancel
+                        {t('common.cancel')}
                     </Button>
                     <Button
                         className="flex-1"
                         onClick={handleTransfer}
                         disabled={!isValidTransfer || parseFloat(amount) > (currentAccount?.balance || 0)}
                     >
-                        Transfer ${amount || "0.00"}
+                        {t('transfer.transferButton')} ${amount || "0.00"}
                     </Button>
                 </div>
             </div>
