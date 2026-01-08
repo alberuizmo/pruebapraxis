@@ -268,7 +268,17 @@ npm run lint
 - ✅ Tests de validación de formularios
 - ✅ Tests de renderizado de componentes
 - ✅ Tests de interacción de usuario
-- ✅ 8/8 tests pasando
+- ✅ Tests de componentes de dashboard (AccountSelector, BalanceCard)
+- ✅ Tests de detalles de transacciones
+- ✅ **26/26 tests pasando**
+
+**Archivos con tests:**
+- `Button.test.tsx` - Componente UI base
+- `LoginForm.test.tsx` - Formulario de autenticación
+- `TransactionsTable.test.tsx` - Tabla de transacciones con filtros
+- `AccountSelector.test.tsx` - 🆕 Selector de cuentas
+- `BalanceCard.test.tsx` - 🆕 Tarjeta de balance
+- `TransactionDetail.test.tsx` - 🆕 Detalles de transacción
 
 ## 📈 Rendimiento
 
