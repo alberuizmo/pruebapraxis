@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useAccounts, useSelectedAccount } from "../hooks/useAccounts";
 import { BalanceCard } from "../components/BalanceCard";
 import { AccountSelector } from "../components/AccountSelector";
 import { TransactionsTable } from "@/features/transactions/components/TransactionsTable";
+import { TransferModal } from "../components/TransferModal";
 import { Button } from "@/components/ui";
 import { Plus } from "lucide-react";
 
 export const DashboardPage = () => {
     const { data: accounts, isLoading } = useAccounts();
     const { selectedAccount, setSelectedAccountId } = useSelectedAccount(accounts);
+    const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
@@ -22,7 +25,7 @@ export const DashboardPage = () => {
                 
                 <div className="flex gap-2">
                     <Button variant="outline">Statements</Button>
-                    <Button className="gap-2">
+                    <Button className="gap-2" onClick={() => setIsTransferModalOpen(true)}>
                         <Plus className="h-4 w-4" />
                         Transfer
                     </Button>
@@ -47,6 +50,14 @@ export const DashboardPage = () => {
 
             {/* Transactions Section */}
             <TransactionsTable />
+
+            {/* Transfer Modal */}
+            <TransferModal 
+                isOpen={isTransferModalOpen}
+                onClose={() => setIsTransferModalOpen(false)}
+                currentAccount={selectedAccount}
+                accounts={accounts}
+            />
         </div>
     );
 };
