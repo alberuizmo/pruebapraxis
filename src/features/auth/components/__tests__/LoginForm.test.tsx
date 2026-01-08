@@ -12,7 +12,7 @@ const mockLogin = vi.fn();
 describe('LoginForm', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        (useAuthHook.useAuth as any).mockReturnValue({
+        (useAuthHook.useAuth as ReturnType<typeof vi.fn>).mockReturnValue({
             login: mockLogin,
             isLoggingIn: false,
             loginError: null

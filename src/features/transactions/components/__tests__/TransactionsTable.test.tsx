@@ -12,7 +12,7 @@ describe('TransactionsTable', () => {
     });
 
     it('renders loading skeletons when loading', () => {
-        (useTransactionsHook.useTransactions as any).mockReturnValue({
+        (useTransactionsHook.useTransactions as ReturnType<typeof vi.fn>).mockReturnValue({
             data: null,
             isLoading: true,
             page: 1,
@@ -38,7 +38,7 @@ describe('TransactionsTable', () => {
             pageSize: 10
         };
 
-        (useTransactionsHook.useTransactions as any).mockReturnValue({
+        (useTransactionsHook.useTransactions as ReturnType<typeof vi.fn>).mockReturnValue({
             data: mockData,
             isLoading: false,
             page: 1,

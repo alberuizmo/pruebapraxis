@@ -1,6 +1,6 @@
 import { useTransactions } from "../hooks/useTransactions";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
-import type { TransactionStatus } from "../services/transaction.service";
+import type { TransactionStatus, Transaction } from "../services/transaction.service";
 import { ChevronLeft, ChevronRight, ArrowUpDown, MoreHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import { useState } from "react";
 import { Sheet } from "@/components/ui/sheet";
@@ -62,7 +62,7 @@ export const TransactionsTable = () => {
         dateStyle: 'medium'
     });
 
-    const [selectedTxn, setSelectedTxn] = useState<any | null>(null);
+    const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
 
     return (
         <>
@@ -121,7 +121,7 @@ export const TransactionsTable = () => {
                                             <td className="px-6 py-4"></td>
                                         </tr>
                                     ))
-                                ) : result?.data.map((txn: any) => (
+                                ) : result?.data.map((txn: Transaction) => (
                                     <tr 
                                         key={txn.id} 
                                         className="bg-white hover:bg-slate-50 transition-colors group cursor-pointer"

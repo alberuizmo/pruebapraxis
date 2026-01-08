@@ -1,10 +1,5 @@
-import { ButtonHTMLAttributes, forwardRef, InputHTMLAttributes, ReactNode } from "react";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { ButtonHTMLAttributes, forwardRef, InputHTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
 
 // Button Component
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

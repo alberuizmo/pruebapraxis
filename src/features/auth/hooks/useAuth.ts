@@ -4,7 +4,7 @@ import { AuthService } from "../services/auth.service";
 export const useAuth = () => {
     const queryClient = useQueryClient();
 
-    const { data: user, isLoading, isError } = useQuery({
+    const { data: user, isLoading } = useQuery({
         queryKey: ['auth', 'session'],
         queryFn: AuthService.getSession,
         staleTime: Infinity, // Keep session "fresh" indefinitely in memory

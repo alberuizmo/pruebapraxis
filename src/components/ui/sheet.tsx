@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { X } from "lucide-react";
-import { cn } from "./index";
+import { cn } from "@/lib/utils";
 import { Button } from "./index";
 
 interface SheetProps {
