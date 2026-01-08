@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { Button, Input, Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import clsx from "clsx";
+
 
 const loginSchema = yup.object({
   email: yup.string().email("Please enter a valid email").required("Email is required"),
@@ -26,10 +26,10 @@ export const LoginForm = () => {
   const onSubmit = async (data: LoginFormValues) => {
     setServerError(null);
     try {
-      await login(data.email);
+      await login({ email: data.email, password: data.password });
       navigate("/dashboard");
     } catch (err) {
-        setServerError("Invalid credentials (simulated). Try text with '@'.");
+        setServerError("Invalid credentials");
         console.error(err);
     }
   };
@@ -82,7 +82,7 @@ export const LoginForm = () => {
       </CardContent>
       <CardFooter className="justify-center">
           <p className="text-xs text-slate-400">
-              Simulated Login: Use any email with '@'
+              Demo Credentials: test@example.com / password123
           </p>
       </CardFooter>
     </Card>

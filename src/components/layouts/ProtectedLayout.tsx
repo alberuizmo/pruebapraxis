@@ -1,8 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
+import { Button } from "@/components/ui";
+
 export const ProtectedLayout = () => {
-    const { user, isLoading } = useAuth();
+    const { user, isLoading, logout } = useAuth();
 
     if (isLoading) {
         return (
@@ -26,8 +28,15 @@ export const ProtectedLayout = () => {
                         <span className="font-semibold text-slate-900">Praxis</span>
                     </div>
                     <div className="flex items-center gap-4">
-                        <span className="text-sm text-slate-600">{user.email}</span>
-                        {/* Add Logout here later or in a user menu */}
+                        <span className="text-sm text-slate-600 mr-2">{user.email}</span>
+                        <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => logout()}
+                            className="text-slate-600 hover:text-slate-900 border-slate-200"
+                        >
+                            Logout
+                        </Button>
                     </div>
                 </div>
             </header>

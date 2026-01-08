@@ -7,26 +7,27 @@ export interface User {
 
 export interface LoginCredentials {
     email: string;
+    password?: string;
 }
 
 // Simulate In-Memory Session
 let currentSession: User | null = null;
 
 export const AuthService = {
-    login: async (email: string): Promise<User> => {
+    login: async (credentials: LoginCredentials): Promise<User> => {
         // Simulate Network Delay
         await new Promise(resolve => setTimeout(resolve, 800));
 
-        // Mock Validation
-        if (!email.includes('@')) {
-            throw new Error("Invalid email format");
+        // Strict Validation
+        if (credentials.email !== 'test@example.com' || credentials.password !== 'password123') {
+            throw new Error("Invalid credentials");
         }
         
         // Mock User
         const user: User = {
             id: 'u_123',
-            email,
-            name: email.split('@')[0],
+            email: credentials.email,
+            name: 'Test User',
             role: 'user'
         };
 
