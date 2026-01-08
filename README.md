@@ -1,303 +1,303 @@
-# 💰 Praxis - Financial Dashboard
+# 💰 Praxis - Dashboard Financiero
 
-A production-ready financial dashboard built with modern web technologies, featuring secure authentication, real-time data management, and advanced transaction filtering.
+Un dashboard financiero construido con tecnologías web modernas, que incluye autenticación segura, gestión de datos en tiempo real y filtrado avanzado de transacciones.
 
 ![React](https://img.shields.io/badge/React-19.2.0-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue)
 ![Vite](https://img.shields.io/badge/Vite-7.2.4-purple)
 ![Tests](https://img.shields.io/badge/Tests-Passing-success)
 
-## 🎯 Project Overview
+## 🎯 Visión General del Proyecto
 
-This project demonstrates production-grade patterns for building financial applications, including:
+Este proyecto demuestra patrones de nivel producción para construir aplicaciones financieras, incluyendo:
 
-- ✅ Secure JWT-based authentication with token rotation
-- ✅ Server-side pagination handling 5,000+ transactions
-- ✅ Advanced filtering (date ranges, text search, status)
-- ✅ Real-time state management with TanStack Query
-- ✅ Comprehensive form validation with React Hook Form + Yup
-- ✅ Full test coverage with Vitest + Testing Library
-- ✅ Production security patterns documented
+- ✅ Autenticación segura basada en JWT con rotación de tokens
+- ✅ Paginación del lado del servidor manejando +5,000 transacciones
+- ✅ Filtrado avanzado (rangos de fechas, búsqueda de texto, estado)
+- ✅ Gestión de estado en tiempo real con TanStack Query
+- ✅ Validación completa de formularios con React Hook Form + Yup
+- ✅ Cobertura completa de tests con Vitest + Testing Library
+- ✅ Patrones de seguridad de producción documentados
 
-## 🚀 Quick Start
+## 🚀 Inicio Rápido
 
-### Prerequisites
+### Prerrequisitos
 
 - Node.js 18+ 
-- npm or yarn
+- npm o yarn
 
-### Installation
+### Instalación
 
 ```bash
-# Clone the repository
+# Clonar el repositorio
 git clone <repository-url>
 
-# Install dependencies
+# Instalar dependencias
 npm install
 
-# Start development server
+# Iniciar servidor de desarrollo
 npm run dev
 
-# Run tests
+# Ejecutar tests
 npm test
 
-# Run linting
+# Ejecutar linting
 npm run lint
 
-# Build for production
+# Construir para producción
 npm run build
 ```
 
-### Demo Credentials
+### Credenciales de Demostración
 
 ```
 Email: test@example.com
 Password: password123
 ```
 
-## 📁 Project Structure
+## 📁 Estructura del Proyecto
 
 ```
 src/
-├── features/              # Feature-based architecture
-│   ├── auth/             # Authentication module
-│   │   ├── components/   # Login form, etc.
-│   │   ├── hooks/        # useAuth with auto-refresh
-│   │   ├── pages/        # Login page
-│   │   └── services/     # Auth API calls
-│   ├── dashboard/        # Dashboard module
-│   │   ├── components/   # Balance card, account selector
+├── features/              # Arquitectura basada en características
+│   ├── auth/             # Módulo de autenticación
+│   │   ├── components/   # Formulario de login, etc.
+│   │   ├── hooks/        # useAuth con auto-refresh
+│   │   ├── pages/        # Página de login
+│   │   └── services/     # Llamadas API de auth
+│   ├── dashboard/        # Módulo de dashboard
+│   │   ├── components/   # Tarjeta de balance, selector de cuenta
 │   │   ├── hooks/        # useAccounts
-│   │   ├── pages/        # Dashboard page
-│   │   └── services/     # Financial API
-│   └── transactions/     # Transactions module
-│       ├── components/   # Table, filters, detail drawer
-│       ├── hooks/        # useTransactions with pagination
-│       └── services/     # Transaction API (5,000+ items)
-├── components/           # Shared components
-│   ├── layouts/         # Protected layout with auth guard
-│   └── ui/              # Reusable UI components
-├── lib/                 # Utilities
-│   ├── auth-tokens.ts   # JWT token management
-│   └── utils.ts         # Helper functions
-└── test/                # Test configuration
+│   │   ├── pages/        # Página de dashboard
+│   │   └── services/     # API financiera
+│   └── transactions/     # Módulo de transacciones
+│       ├── components/   # Tabla, filtros, drawer de detalles
+│       ├── hooks/        # useTransactions con paginación
+│       └── services/     # API de transacciones (+5,000 items)
+├── components/           # Componentes compartidos
+│   ├── layouts/         # Layout protegido con guard de autenticación
+│   └── ui/              # Componentes UI reutilizables
+├── lib/                 # Utilidades
+│   ├── auth-tokens.ts   # Gestión de tokens JWT
+│   └── utils.ts         # Funciones auxiliares
+└── test/                # Configuración de tests
 ```
 
-## 🔐 Security Implementation
+## 🔐 Implementación de Seguridad
 
-This project implements **production-grade security patterns**:
+Este proyecto implementa **patrones de seguridad de nivel producción**:
 
-### JWT Token Management
-- **Short-lived tokens**: 15-minute expiration (industry standard)
-- **Automatic refresh**: Proactive token rotation before expiration
-- **Auto-logout**: Forced logout on token expiration
-- **sessionStorage**: Tokens cleared on browser close
+### Gestión de Tokens JWT
+- **Tokens de corta duración**: Expiración de 15 minutos (estándar de la industria)
+- **Actualización automática**: Rotación proactiva de tokens antes de expirar
+- **Logout automático**: Cierre de sesión forzado al expirar el token
+- **sessionStorage**: Tokens eliminados al cerrar el navegador
 
-### Security Features
+### Características de Seguridad
 ```typescript
-✅ Token validation on every request
-✅ Automatic token rotation (5 min before expiration)
-✅ Secure storage (sessionStorage, not localStorage)
-✅ Protected routes with authentication guards
-✅ Type-safe API calls with TypeScript
-✅ HTTPS ready for production
+✅ Validación de tokens en cada solicitud
+✅ Rotación automática de tokens (5 min antes de expirar)
+✅ Almacenamiento seguro (sessionStorage, no localStorage)
+✅ Rutas protegidas con guardias de autenticación
+✅ Llamadas API con seguridad de tipos TypeScript
+✅ Listo para HTTPS en producción
 ```
 
-**📖 Detailed security documentation:** [SECURITY.md](SECURITY.md)
+**📖 Documentación detallada de seguridad:** [SECURITY.md](SECURITY.md)
 
-## 📊 Features
+## 📊 Características
 
-### A. Authentication
-- [x] Simulated login with validation
-- [x] Session persistence across page reloads
-- [x] Protected routes with automatic redirects
-- [x] Token expiration handling
-- [x] Form validation with error messages
+### A. Autenticación
+- [x] Login simulado con validación
+- [x] Persistencia de sesión al recargar la página
+- [x] Rutas protegidas con redirecciones automáticas
+- [x] Manejo de expiración de tokens
+- [x] Validación de formularios con mensajes de error
 
-### B. Financial Dashboard
-- [x] Account selector with multiple accounts
-- [x] Real-time balance display
-- [x] Last updated timestamp
-- [x] Responsive design
+### B. Dashboard Financiero
+- [x] Selector de cuenta con múltiples cuentas
+- [x] Visualización de balance en tiempo real
+- [x] Marca de tiempo de última actualización
+- [x] Diseño responsive
 
-### C. Transactions Table
+### C. Tabla de Transacciones
 
-#### Pagination
-- [x] Server-side pagination (10 items per page)
-- [x] Smooth transitions with `keepPreviousData`
-- [x] Page indicators and navigation
-- [x] Handles 5,000+ transactions efficiently
+#### Paginación
+- [x] Paginación del lado del servidor (10 items por página)
+- [x] Transiciones suaves con `keepPreviousData`
+- [x] Indicadores de página y navegación
+- [x] Maneja eficientemente +5,000 transacciones
 
-#### Filtering
-- [x] **Text search**: Search by concept or merchant
-- [x] **Date range**: Filter by start and end dates
-- [x] **Status filter**: PENDING, CONFIRMED, FAILED
-- [x] **Combined filters**: Apply multiple filters simultaneously
-- [x] **Clear filters**: Reset all filters with one click
-- [x] **Active filters summary**: Visual badges showing applied filters
+#### Filtrado
+- [x] **Búsqueda de texto**: Buscar por concepto o comerciante
+- [x] **Rango de fechas**: Filtrar por fechas de inicio y fin
+- [x] **Filtro de estado**: PENDING, CONFIRMED, FAILED
+- [x] **Filtros combinados**: Aplicar múltiples filtros simultáneamente
+- [x] **Limpiar filtros**: Restablecer todos los filtros con un clic
+- [x] **Resumen de filtros activos**: Badges visuales mostrando filtros aplicados
 
-#### Sorting
-- [x] Sort by date (ascending/descending)
-- [x] Sort by amount (ascending/descending)
-- [x] Visual indicators (arrows)
-- [x] Maintains sort state across pagination
+#### Ordenamiento
+- [x] Ordenar por fecha (ascendente/descendente)
+- [x] Ordenar por monto (ascendente/descendente)
+- [x] Indicadores visuales (flechas)
+- [x] Mantiene el estado de ordenamiento entre páginas
 
-#### Transaction Details
-- [x] Click any row to open detail drawer
-- [x] Full-height drawer with smooth animation
-- [x] Complete transaction information
-- [x] Close via button, backdrop click, or ESC key
+#### Detalles de Transacción
+- [x] Clic en cualquier fila para abrir drawer de detalles
+- [x] Drawer de altura completa con animación suave
+- [x] Información completa de la transacción
+- [x] Cerrar mediante botón, clic en backdrop, o tecla ESC
 
-## 🛠 Tech Stack
+## 🛠 Stack Tecnológico
 
 ### Core
-- **React 19.2** - UI library with latest features
-- **TypeScript 5.9** - Type safety
-- **Vite 7.2** - Lightning-fast build tool
+- **React 19.2** - Biblioteca UI con las últimas características
+- **TypeScript 5.9** - Seguridad de tipos
+- **Vite 7.2** - Herramienta de construcción ultra-rápida
 
-### State Management
-- **TanStack Query 5.90** - Server state management
-- **React Hook Form 7.70** - Form handling
-- **Yup 1.7** - Schema validation
+### Gestión de Estado
+- **TanStack Query 5.90** - Gestión de estado del servidor
+- **React Hook Form 7.70** - Manejo de formularios
+- **Yup 1.7** - Validación de esquemas
 
-### Styling
-- **Tailwind CSS 3.4** - Utility-first CSS
-- **clsx + tailwind-merge** - Dynamic class names
+### Estilos
+- **Tailwind CSS 3.4** - CSS utility-first
+- **clsx + tailwind-merge** - Nombres de clase dinámicos
 
 ### Testing
-- **Vitest 4.0** - Unit tests
-- **Testing Library 16.3** - Component testing
-- **jsdom 27.4** - DOM simulation
+- **Vitest 4.0** - Tests unitarios
+- **Testing Library 16.3** - Testing de componentes
+- **jsdom 27.4** - Simulación del DOM
 
-### Development
-- **ESLint 9.39** - Code linting
-- **TypeScript ESLint** - TS-specific linting
-- **React Refresh** - Fast refresh in dev
+### Desarrollo
+- **ESLint 9.39** - Linting de código
+- **TypeScript ESLint** - Linting específico para TS
+- **React Refresh** - Recarga rápida en desarrollo
 
 ## 🧪 Testing
 
 ```bash
-# Run all tests
+# Ejecutar todos los tests
 npm test
 
-# Run tests in watch mode
+# Ejecutar tests en modo watch
 npm run test:ui
 
-# Run linting
+# Ejecutar linting
 npm run lint
 ```
 
-### Test Coverage
-- ✅ Authentication flow tests
-- ✅ Form validation tests
-- ✅ Component rendering tests
-- ✅ User interaction tests
-- ✅ 8/8 tests passing
+### Cobertura de Tests
+- ✅ Tests de flujo de autenticación
+- ✅ Tests de validación de formularios
+- ✅ Tests de renderizado de componentes
+- ✅ Tests de interacción de usuario
+- ✅ 8/8 tests pasando
 
-## 📈 Performance
+## 📈 Rendimiento
 
-### Optimizations Implemented
-1. **Server-side pagination**: Only 10 items rendered at a time
-2. **React Query caching**: Reduces API calls
-3. **keepPreviousData**: Smooth pagination transitions
-4. **Memoized components**: Prevents unnecessary re-renders
-5. **Lazy loading**: Routes code-split automatically
+### Optimizaciones Implementadas
+1. **Paginación del lado del servidor**: Solo 10 items renderizados a la vez
+2. **Caché de React Query**: Reduce llamadas a la API
+3. **keepPreviousData**: Transiciones suaves de paginación
+4. **Componentes memoizados**: Previene re-renders innecesarios
+5. **Carga diferida**: Rutas divididas automáticamente en código
 
 ### Benchmarks
-- ⚡ Initial load: ~600ms
-- ⚡ Page transitions: <100ms
-- ⚡ Filter application: <200ms
-- ⚡ Handles 5,000+ transactions without lag
+- ⚡ Carga inicial: ~600ms
+- ⚡ Transiciones de página: <100ms
+- ⚡ Aplicación de filtros: <200ms
+- ⚡ Maneja +5,000 transacciones sin lag
 
-## 🎨 UI/UX Features
+## 🎨 Características de UI/UX
 
-- **Responsive design**: Works on mobile, tablet, and desktop
-- **Loading states**: Skeleton screens during data fetch
-- **Error handling**: User-friendly error messages
-- **Keyboard navigation**: Full keyboard support
-- **Accessibility**: ARIA labels and semantic HTML
-- **Visual feedback**: Hover states and transitions
+- **Diseño responsive**: Funciona en móvil, tablet y escritorio
+- **Estados de carga**: Pantallas skeleton durante la obtención de datos
+- **Manejo de errores**: Mensajes de error amigables
+- **Navegación por teclado**: Soporte completo de teclado
+- **Accesibilidad**: Etiquetas ARIA y HTML semántico
+- **Retroalimentación visual**: Estados hover y transiciones
 
-## 📚 Documentation
+## 📚 Documentación
 
-- [SECURITY.md](SECURITY.md) - Security implementation details
-- [FEATURES.md](FEATURES.md) - Complete feature checklist
+- [SECURITY.md](SECURITY.md) - Detalles de implementación de seguridad
+- [FEATURES.md](FEATURES.md) - Lista completa de características
 
-## 🔄 Development Workflow
+## 🔄 Flujo de Desarrollo
 
 ```bash
-# Start development
+# Iniciar desarrollo
 npm run dev
 
-# Before committing
-npm run lint        # Check code quality
-npm test           # Run tests
-npm run build      # Ensure build works
+# Antes de hacer commit
+npm run lint        # Verificar calidad del código
+npm test           # Ejecutar tests
+npm run build      # Asegurar que el build funciona
 ```
 
-## 🌐 Deployment
+## 🌐 Despliegue
 
-### Build for Production
+### Construir para Producción
 
 ```bash
 npm run build
 ```
 
-The build outputs to `dist/` directory.
+La construcción se genera en el directorio `dist/`.
 
-### Environment Variables (Production)
+### Variables de Entorno (Producción)
 
 ```env
 VITE_API_URL=https://your-api.com
 VITE_ENV=production
 ```
 
-### Deployment Platforms
+### Plataformas de Despliegue
 - **Vercel**: `vercel deploy`
 - **Netlify**: `netlify deploy`
-- **AWS/Azure**: Use `dist/` folder
+- **AWS/Azure**: Usar carpeta `dist/`
 
-## 🤝 Best Practices Demonstrated
+## 🤝 Mejores Prácticas Demostradas
 
-1. **Architecture**
-   - Feature-based folder structure
-   - Separation of concerns (components, hooks, services)
-   - Reusable component library
+1. **Arquitectura**
+   - Estructura de carpetas basada en características
+   - Separación de responsabilidades (componentes, hooks, servicios)
+   - Biblioteca de componentes reutilizables
 
-2. **Code Quality**
-   - TypeScript for type safety
-   - ESLint for code consistency
-   - Comprehensive testing
+2. **Calidad de Código**
+   - TypeScript para seguridad de tipos
+   - ESLint para consistencia del código
+   - Testing comprehensivo
 
-3. **Security**
-   - Token-based authentication
-   - Protected routes
-   - Secure session management
+3. **Seguridad**
+   - Autenticación basada en tokens
+   - Rutas protegidas
+   - Gestión segura de sesiones
 
-4. **Performance**
-   - Efficient data fetching
-   - Optimistic updates
-   - Code splitting
+4. **Rendimiento**
+   - Obtención eficiente de datos
+   - Actualizaciones optimistas
+   - División de código
 
 5. **UX**
-   - Loading states
-   - Error boundaries
-   - Responsive design
+   - Estados de carga
+   - Límites de error
+   - Diseño responsive
 
-## 📝 License
+## 📝 Licencia
 
-This project is created for educational and demonstration purposes.
+Este proyecto está creado con fines educativos y de demostración.
 
-## 🙏 Acknowledgments
+## 🙏 Agradecimientos
 
-Built with modern web technologies following industry best practices for financial applications.
+Construido con tecnologías web modernas siguiendo las mejores prácticas de la industria para aplicaciones financieras.
 
 ---
 
-**Demo Version** - For production use, implement:
-- Real backend API
-- Database integration
-- 2FA authentication
-- Audit logging
-- Rate limiting
-- HTTPS enforcement
+**Versión Demo** - Para uso en producción, implementar:
+- API backend real
+- Integración con base de datos
+- Autenticación 2FA
+- Registro de auditoría
+- Limitación de tasa
+- Aplicación de HTTPS

@@ -61,7 +61,7 @@ const query = useQuery({
 ```tsx
 // TransactionsTable.tsx - líneas 88-110
 <Input 
-    placeholder="Search by concept or merchant..." 
+    placeholder="Buscar por concepto o comercio..." 
     value={searchTerm}
     onChange={(e) => setSearchTerm(e.target.value)}
 />
@@ -166,7 +166,7 @@ const StatusBadge = ({ status }: { status: TransactionStatus }) => {
 <Sheet 
     isOpen={!!selectedTxn} 
     onClose={() => setSelectedTxn(null)} 
-    title="Transaction Details"
+    title="Detalles de Transacción"
 >
     {selectedTxn && <TransactionDetail transaction={selectedTxn} />}
 </Sheet>

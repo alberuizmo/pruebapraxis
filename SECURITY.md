@@ -1,17 +1,17 @@
-# Security Implementation
+# Implementación de Seguridad
 
-## 🔐 Production-Grade Authentication Pattern
+## 🔐 Patrón de Autenticación de Nivel Producción
 
-This project implements security patterns used in **real-world financial applications** for educational and demonstration purposes.
+Este proyecto implementa patrones de seguridad usados en **aplicaciones financieras del mundo real** con fines educativos y de demostración.
 
 ---
 
-## Implementation Overview
+## Resumen de la Implementación
 
-### 1. Token-Based Authentication (JWT Pattern)
+### 1. Autenticación Basada en Tokens (Patrón JWT)
 
 ```typescript
-// Short-lived access tokens (15 minutes)
+// Tokens de acceso de corta duración (15 minutos)
 interface AuthToken {
     accessToken: string;
     expiresAt: number;
@@ -19,76 +19,76 @@ interface AuthToken {
 }
 ```
 
-**Why?** Reduces attack window if token is compromised.
+**¿Por qué?** Reduce la ventana de ataque si el token se ve comprometido.
 
-### 2. Secure Storage Strategy
+### 2. Estrategia de Almacenamiento Seguro
 
 ```typescript
-✅ sessionStorage: Access tokens (cleared on browser close)
-✅ httpOnly Cookies: Refresh tokens (in production with backend)
-❌ localStorage: NOT used for sensitive data
-❌ Client-side: NO sensitive financial data stored
+✅ sessionStorage: Tokens de acceso (eliminados al cerrar el navegador)
+✅ httpOnly Cookies: Tokens de actualización (en producción con backend)
+❌ localStorage: NO se usa para datos sensibles
+❌ Client-side: NO se almacenan datos financieros sensibles
 ```
 
-### 3. Token Lifecycle Management
+### 3. Gestión del Ciclo de Vida del Token
 
 ```typescript
-// Automatic token refresh before expiration
+// Actualización automática del token antes de expirar
 useEffect(() => {
     const interval = setInterval(() => {
         if (tokenExpiresIn < 5min) {
-            refreshToken(); // Proactive refresh
+            refreshToken(); // Actualización proactiva
         }
     }, 60000);
 }, []);
 ```
 
-### 4. Defense in Depth Layers
+### 4. Capas de Defensa en Profundidad
 
-| Layer | Implementation | Purpose |
+| Capa | Implementación | Propósito |
 |-------|----------------|---------|
-| **Transport** | HTTPS only (production) | Encrypt data in transit |
-| **Authentication** | JWT with expiration | Stateless auth |
-| **Authorization** | Role-based (user/admin) | Access control |
-| **Token Refresh** | Automatic rotation | Minimize exposure |
-| **Session Validation** | On every request | Verify token validity |
-| **Auto Logout** | On token expiration | Force re-authentication |
+| **Transporte** | Solo HTTPS (producción) | Cifrar datos en tránsito |
+| **Autenticación** | JWT con expiración | Auth sin estado |
+| **Autorización** | Basado en roles (user/admin) | Control de acceso |
+| **Actualización de Token** | Rotación automática | Minimizar exposición |
+| **Validación de Sesión** | En cada solicitud | Verificar validez del token |
+| **Logout Automático** | Al expirar el token | Forzar re-autenticación |
 
 ---
 
-## 🛡️ Security Features Implemented
+## 🛡️ Características de Seguridad Implementadas
 
-### ✅ What This Demo Includes:
+### ✅ Lo que Incluye esta Demo:
 
-1. **Short-Lived Tokens (15 min)**
-   - Reduces attack window
-   - Forces periodic re-authentication
+1. **Tokens de Corta Duración (15 min)**
+   - Reduce la ventana de ataque
+   - Fuerza re-autenticación periódica
    
-2. **Token Validation**
-   - Expiration checks on every request
-   - Automatic cleanup of expired tokens
+2. **Validación de Tokens**
+   - Verificaciones de expiración en cada solicitud
+   - Limpieza automática de tokens expirados
 
-3. **Automatic Token Refresh**
-   - Proactive refresh 5 minutes before expiration
-   - Seamless user experience
+3. **Actualización Automática de Tokens**
+   - Actualización proactiva 5 minutos antes de expirar
+   - Experiencia de usuario fluida
 
-4. **Secure Storage**
-   - sessionStorage for tokens only
-   - NO sensitive data in client storage
+4. **Almacenamiento Seguro**
+   - sessionStorage solo para tokens
+   - NO hay datos sensibles en almacenamiento del cliente
 
-5. **Auto-Logout on Expiration**
-   - User is logged out when token expires
-   - Prevents stale session attacks
+5. **Logout Automático al Expirar**
+   - Usuario desconectado cuando expira el token
+   - Previene ataques de sesión obsoleta
 
-6. **Clear Audit Trail**
-   - Commented code explaining security decisions
-   - Production vs demo distinctions
+6. **Rastro de Auditoría Claro**
+   - Código comentado explicando decisiones de seguridad
+   - Distinciones entre producción y demo
 
-### 🚀 What Production Would Add:
+### 🚀 Lo que Producción Agregaría:
 
-1. **Backend Token Generation**
+1. **Generación de Tokens en Backend**
    ```javascript
-   // Backend (Node.js/Express example)
+   // Backend (ejemplo Node.js/Express)
    const jwt = require('jsonwebtoken');
    const token = jwt.sign({ userId, role }, SECRET_KEY, { 
        expiresIn: '15m',
@@ -96,46 +96,46 @@ useEffect(() => {
    });
    ```
 
-2. **Refresh Tokens in httpOnly Cookies**
+2. **Tokens de Actualización en Cookies httpOnly**
    ```javascript
    res.cookie('refreshToken', token, {
-       httpOnly: true,  // Not accessible via JavaScript
-       secure: true,    // HTTPS only
+       httpOnly: true,  // No accesible vía JavaScript
+       secure: true,    // Solo HTTPS
        sameSite: 'strict',
-       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
    });
    ```
 
-3. **Token Rotation**
-   - New tokens issued on each refresh
-   - Old tokens invalidated
+3. **Rotación de Tokens**
+   - Nuevos tokens emitidos en cada actualización
+   - Tokens antiguos invalidados
 
-4. **Rate Limiting**
+4. **Limitación de Tasa**
    ```javascript
    // Backend (express-rate-limit)
    const limiter = rateLimit({
-       windowMs: 15 * 60 * 1000, // 15 minutes
-       max: 5, // 5 attempts
-       message: 'Too many login attempts'
+       windowMs: 15 * 60 * 1000, // 15 minutos
+       max: 5, // 5 intentos
+       message: 'Demasiados intentos de inicio de sesión'
    });
    app.use('/api/auth/login', limiter);
    ```
 
-5. **Content Security Policy (CSP)**
+5. **Política de Seguridad de Contenido (CSP)**
    ```html
    <meta http-equiv="Content-Security-Policy" 
          content="default-src 'self'; script-src 'self'">
    ```
 
-6. **Two-Factor Authentication (2FA)**
+6. **Autenticación de Dos Factores (2FA)**
    - TOTP (Time-based One-Time Password)
-   - SMS or email verification
+   - Verificación por SMS o email
 
-7. **Token Blacklisting**
-   - Redis store for revoked tokens
-   - Checked on every request
+7. **Lista Negra de Tokens**
+   - Almacén Redis para tokens revocados
+   - Verificado en cada solicitud
 
-8. **Audit Logging**
+8. **Registro de Auditoría**
    ```javascript
    auditLog.record({
        event: 'LOGIN_SUCCESS',
@@ -147,34 +147,34 @@ useEffect(() => {
 
 ---
 
-## 🔍 Code Structure
+## 🔍 Estructura del Código
 
 ```
 src/
 ├── lib/
-│   └── auth-tokens.ts          # Token management utilities
+│   └── auth-tokens.ts          # Utilidades de gestión de tokens
 ├── features/
 │   └── auth/
 │       ├── services/
-│       │   └── auth.service.ts # Authentication API calls
+│       │   └── auth.service.ts # Llamadas API de autenticación
 │       └── hooks/
-│           └── useAuth.ts      # Auth state + auto-refresh
+│           └── useAuth.ts      # Estado de auth + auto-refresh
 ```
 
-### Key Files:
+### Archivos Clave:
 
-- **`auth-tokens.ts`**: Token creation, validation, and lifecycle
-- **`auth.service.ts`**: Backend communication (simulated)
-- **`useAuth.ts`**: React hook with auto-refresh logic
+- **`auth-tokens.ts`**: Creación, validación y ciclo de vida del token
+- **`auth.service.ts`**: Comunicación con backend (simulada)
+- **`useAuth.ts`**: Hook de React con lógica de auto-refresh
 
 ---
 
-## 🧪 Testing Considerations
+## 🧪 Consideraciones de Testing
 
-This implementation is **test-friendly**:
+Esta implementación es **amigable para tests**:
 
 ```typescript
-// Mock sessionStorage in tests
+// Mock de sessionStorage en tests
 beforeEach(() => {
     Object.defineProperty(window, 'sessionStorage', {
         value: {
@@ -188,42 +188,42 @@ beforeEach(() => {
 
 ---
 
-## 📚 Best Practices Demonstrated
+## 📚 Mejores Prácticas Demostradas
 
-1. ✅ **Principle of Least Privilege**: Store minimal data client-side
-2. ✅ **Defense in Depth**: Multiple security layers
-3. ✅ **Fail Secure**: Auto-logout on token issues
-4. ✅ **Clear Documentation**: Every security decision is commented
-5. ✅ **Testability**: All security logic is unit-testable
-6. ✅ **Transparency**: Clear distinction between demo and production
-
----
-
-## 🎯 Why This Matters for Financial Apps
-
-Financial applications require:
-
-- **PCI DSS Compliance**: No sensitive card data stored client-side
-- **GDPR/Privacy**: Minimal data retention
-- **Audit Trails**: Complete logging of auth events
-- **Session Management**: Automatic timeout on inactivity
-- **Zero Trust**: Verify every request
-
-This implementation demonstrates understanding of these requirements.
+1. ✅ **Principio de Mínimo Privilegio**: Almacenar datos mínimos del lado del cliente
+2. ✅ **Defensa en Profundidad**: Múltiples capas de seguridad
+3. ✅ **Fallar de Forma Segura**: Logout automático ante problemas con tokens
+4. ✅ **Documentación Clara**: Cada decisión de seguridad está comentada
+5. ✅ **Testeabilidad**: Toda la lógica de seguridad es testeable unitariamente
+6. ✅ **Transparencia**: Clara distinción entre demo y producción
 
 ---
 
-## 📖 References
+## 🎯 Por Qué Esto Importa para Apps Financieras
+
+Las aplicaciones financieras requieren:
+
+- **Cumplimiento PCI DSS**: No almacenar datos sensibles de tarjetas del lado del cliente
+- **GDPR/Privacidad**: Retención mínima de datos
+- **Rastros de Auditoría**: Registro completo de eventos de autenticación
+- **Gestión de Sesiones**: Timeout automático por inactividad
+- **Confianza Cero**: Verificar cada solicitud
+
+Esta implementación demuestra comprensión de estos requisitos.
+
+---
+
+## 📖 Referencias
 
 - [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
-- [JWT Best Practices](https://tools.ietf.org/html/rfc8725)
-- [OAuth 2.0 Security Best Practices](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics)
-- [NIST Digital Identity Guidelines](https://pages.nist.gov/800-63-3/)
+- [Mejores Prácticas JWT](https://tools.ietf.org/html/rfc8725)
+- [Mejores Prácticas de Seguridad OAuth 2.0](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics)
+- [Guías de Identidad Digital NIST](https://pages.nist.gov/800-63-3/)
 
 ---
 
-## 🤝 Questions?
+## 🤝 ¿Preguntas?
 
-This security implementation was designed to demonstrate production-ready patterns while maintaining clarity and educational value.
+Esta implementación de seguridad fue diseñada para demostrar patrones listos para producción manteniendo claridad y valor educativo.
 
-**Note**: This is a demo application. In production, all cryptographic operations and token generation would be handled server-side.
+**Nota**: Esta es una aplicación demo. En producción, todas las operaciones criptográficas y generación de tokens serían manejadas del lado del servidor.
