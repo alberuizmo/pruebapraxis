@@ -82,12 +82,14 @@ export const TransactionService = {
                 result = result.filter(t => t.status === filters.status);
             }
             if (filters.startDate) {
-                const start = new Date(filters.startDate).getTime();
-                result = result.filter(t => new Date(t.date).getTime() >= start);
+                // Start of day in local timezone
+                const start = new Date(filters.startDate + 'T00:00:00');
+                result = result.filter(t => new Date(t.date) >= start);
             }
             if (filters.endDate) {
-                const end = new Date(filters.endDate).getTime();
-                result = result.filter(t => new Date(t.date).getTime() <= end);
+                // End of day in local timezone (23:59:59.999)
+                const end = new Date(filters.endDate + 'T23:59:59.999');
+                result = result.filter(t => new Date(t.date) <= end);
             }
         }
 

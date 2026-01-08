@@ -1,7 +1,7 @@
 import { useTransactions } from "../hooks/useTransactions";
 import { Card, CardContent, CardHeader, CardTitle, Button, Input } from "@/components/ui";
 import type { TransactionStatus, Transaction } from "../services/transaction.service";
-import { ChevronLeft, ChevronRight, ArrowUpDown, MoreHorizontal, ArrowUp, ArrowDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowUpDown, MoreHorizontal, ArrowUp, ArrowDown, Calendar, X } from "lucide-react";
 import { useState } from "react";
 import { Sheet } from "@/components/ui/sheet";
 import { TransactionDetail } from "./TransactionDetail";
@@ -33,18 +33,37 @@ export const TransactionsTable = () => {
         isPlaceholderData,
         page, 
         setPage, 
+        filters,
         setFilters,
         sort,
         setSort 
     } = useTransactions();
 
     const [searchTerm, setSearchTerm] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        setFilters(prev => ({ ...prev, search: searchTerm }));
+        setFilters(prev => ({ 
+            ...prev, 
+            search: searchTerm,
+            startDate: startDate || undefined,
+            endDate: endDate || undefined
+        }));
         setPage(1);
     };
+
+    const clearFilters = () => {
+        setSearchTerm("");
+        setStartDate("");
+        setEndDate("");
+        setFilters({});
+        setPage(1);
+    };
+
+    const hasActiveFilters = searchTerm || startDate || endDate || filters.status;
 
     const toggleSort = (field: 'date' | 'amount') => {
         setSort(prev => ({
@@ -62,36 +81,102 @@ export const TransactionsTable = () => {
         dateStyle: 'medium'
     });
 
-    const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
-
     return (
         <>
             <Card className="border-slate-200 shadow-sm">
-                <CardHeader className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between pb-4 border-b border-slate-100">
-                    <CardTitle className="text-lg font-semibold text-slate-900">Recent Transactions</CardTitle>
-                    <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-                        <form onSubmit={handleSearch} className="flex gap-2 w-full sm:w-auto">
+                <CardHeader className="flex flex-col gap-4 items-start pb-4 border-b border-slate-100">
+                    <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between w-full">
+                        <CardTitle className="text-lg font-semibold text-slate-900">Recent Transactions</CardTitle>
+                        {hasActiveFilters && (
+                            <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={clearFilters}
+                                className="text-slate-600 hover:text-slate-900"
+                            >
+                                <X className="h-4 w-4 mr-2" />
+                                Clear Filters
+                            </Button>
+                        )}
+                    </div>
+                    
+                    {/* Filters */}
+                    <div className="flex flex-col gap-3 w-full">
+                        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 w-full">
+                            {/* Search by concept */}
                             <Input 
-                                placeholder="Search transactions..." 
-                                className="h-9 w-full sm:w-64"
+                                placeholder="Search by concept or merchant..." 
+                                className="h-9 flex-1"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
-                            <Button type="submit" size="sm" variant="secondary">Filter</Button>
+                            
+                            {/* Date Range */}
+                            <div className="flex gap-2 items-center">
+                                <Calendar className="h-4 w-4 text-slate-400" />
+                                <Input 
+                                    type="date"
+                                    className="h-9 w-40"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    placeholder="Start date"
+                                />
+                                <span className="text-slate-400">-</span>
+                                <Input 
+                                    type="date"
+                                    className="h-9 w-40"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                    placeholder="End date"
+                                />
+                            </div>
+                            
+                            {/* Status Filter */}
+                            <select 
+                                className="h-9 rounded-md border border-slate-300 text-sm px-3 focus:ring-2 focus:ring-financial-primary outline-none"
+                                value={filters.status || 'ALL'}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    setFilters(prev => ({ ...prev, status: val === 'ALL' ? undefined : val as TransactionStatus }));
+                                    setPage(1);
+                                }}
+                            >
+                                <option value="ALL">All Status</option>
+                                <option value="PENDING">Pending</option>
+                                <option value="CONFIRMED">Confirmed</option>
+                                <option value="FAILED">Failed</option>
+                            </select>
+                            
+                            <Button type="submit" size="sm" variant="secondary" className="whitespace-nowrap">
+                                Apply Filters
+                            </Button>
                         </form>
-                        <select 
-                            className="h-9 rounded-md border border-slate-300 text-sm px-3 focus:ring-2 focus:ring-financial-primary outline-none"
-                            onChange={(e) => {
-                                const val = e.target.value;
-                                setFilters(prev => ({ ...prev, status: val === 'ALL' ? undefined : val as TransactionStatus }));
-                                setPage(1);
-                            }}
-                        >
-                            <option value="ALL">All Status</option>
-                            <option value="PENDING">Pending</option>
-                            <option value="CONFIRMED">Confirmed</option>
-                            <option value="FAILED">Failed</option>
-                        </select>
+                        
+                        {/* Active filters summary */}
+                        {hasActiveFilters && (
+                            <div className="flex flex-wrap gap-2 text-xs text-slate-600">
+                                {searchTerm && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
+                                        Search: <strong>{searchTerm}</strong>
+                                    </span>
+                                )}
+                                {startDate && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
+                                        From: <strong>{new Date(startDate + 'T00:00:00').toLocaleDateString()}</strong>
+                                    </span>
+                                )}
+                                {endDate && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
+                                        To: <strong>{new Date(endDate + 'T00:00:00').toLocaleDateString()}</strong>
+                                    </span>
+                                )}
+                                {filters.status && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 rounded">
+                                        Status: <strong>{filters.status}</strong>
+                                    </span>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </CardHeader>
                 <CardContent className="p-0">
